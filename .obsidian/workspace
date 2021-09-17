@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "profile/README.md",
+            "file": "WishfulProjects.md",
             "mode": "source"
           }
         },
@@ -21,7 +21,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "profile/README.md",
+            "file": "WishfulProjects.md",
             "mode": "source"
           }
         },
@@ -81,7 +81,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "profile/README.md",
+                "file": "WishfulProjects.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -101,10 +101,10 @@
   },
   "active": "e7b7a90ac3eabf74",
   "lastOpenFiles": [
-    "profile/README.md",
     "WishfulProjects.md",
-    "CurrentProjects.md",
     "FinalProjects.md",
+    "CurrentProjects.md",
+    "profile/README.md",
     "README.md"
   ]
 }
