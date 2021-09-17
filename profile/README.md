@@ -5,4 +5,4 @@ ForSaken Borders aims to be a whole ecosystem of technology. We currently believ
 - [What we've accomplished so far](FinalProjects.md)
 - [What we're wanting to implement](WishfulProjects.md)
 
-Currently looking for a webdev and a mobile developer!
+Currently looking for webdevs and mobile developers!
