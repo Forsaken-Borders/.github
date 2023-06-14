@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto&display=swap);
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
 /* W3 things */
 :disabled * {
@@ -26,16 +26,9 @@ h5 {
 }
 
 /* Layout */
-header {
-    border-radius: 8px;
-    margin: 1em 2.5em;
-    padding: 10px;
-    text-align: center;
-    width: calc(100% - 5em);
-}
-
 html,
 body {
+    box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
     font-weight: normal;
@@ -44,27 +37,39 @@ body {
     margin-bottom: 1.25em;
     overflow: auto;
     padding: 0;
-}
-
-html {
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
-    box-sizing: border-box;
-    overflow-x: hidden;
+}
+
+header {
+    border-radius: 8px;
+    margin: 1em 2.5em;
+    padding: 10px;
+    text-align: center;
 }
 
 main {
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
     margin: 0 2.5em;
     padding: 10px;
+    align-items: center;
+}
+
+.emoji {
+    display: inline-block;
+    height: 1.375em;
+    vertical-align: -0.275em;
+    width: 1.375em;
 }
 
 /* Display grid */
 .display {
-    align-content: center;
+    min-width: 100%;
+    align-self: center;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min-content, 300px));
-    justify-content: center;
 }
 
 .project-display {
@@ -87,11 +92,10 @@ main {
     border: #181c2b 3px solid;
     border-radius: 5px;
     height: 175px;
-    margin-bottom: 1em;
     width: 175px;
 }
 
-.project-display>.missing-img {
+.project-display>img.missing-img {
     height: 150px;
     padding: 12.5px;
     width: 150px;
@@ -100,6 +104,28 @@ main {
 .project-display:hover {
     background-color: #495683 !important;
     cursor: pointer;
+}
+
+.project-metadata {
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    justify-content: space-between;
+    overflow: visible;
+}
+
+.project-metadata>div {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: min-content;
+}
+
+.project-metadata>div>svg {
+    height: 1.25rem;
+    width: 1.25rem;
+    margin-left: 7.5px;
 }
 
 /* Tabs */
@@ -119,9 +145,14 @@ main {
     display: flex;
     flex-direction: row-reverse;
     font-size: 16px;
+    margin-right: 10px;
+    margin-bottom: 5px;
     padding: 10px;
     width: fit-content;
-    margin: 2px;
+}
+
+.tab:last-child {
+    margin-right: 0;
 }
 
 .tab.active {
@@ -135,9 +166,9 @@ main {
 
 .tab img {
     height: 32px;
-    width: 32px;
     margin: 2px;
     margin-right: 4px;
+    width: 32px;
 }
 
 /* Responsive styles */
