@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Forsaken Borders</title>
+        <meta content="Lunar Starstrum <lunar@forsaken-borders.net>" name="author" />
+        <meta content="Forsaken Borders" name="title" />
+        <meta content="Forsaken Borders, Home to projects done right." name="description" />
+        <meta content="Forsaken Borders, forb, forsaken, borders, forsaken-borders, forsaken website, forsaken borders website" name="keywords" />
+        <meta content="width=device-width,initial-scale=1" name="viewport" />
+        <meta content="58abbd4b9cbc0d1c765f15b11514f6c6" name="ocs-site-verification" />
+        <meta content="website" property="og:type" />
+        <meta content="https://forsaken-borders.net/" property="og:url" />
+        <meta content="Forsaken Borders" property="og:title" />
+        <meta content="Forsaken Borders, Home to projects done right." property="og:description" />
+        <meta content="https://files.forsaken-borders.net/images/Forsaken%20Borders%20Icon.png" property="og:image" />
+        <meta content="https://files.forsaken-borders.net/images/Forsaken%20Borders%20Icon.png" property="twitter:card" />
+        <meta content="https://forsaken-borders.net/" property="twitter:url" />
+        <meta content="Forsaken Borders" property="twitter:title" />
+        <meta content="Forsaken Borders, Home to projects done right." property="twitter:description" />
+        <meta content="https://files.forsaken-borders.net/images/Forsaken%20Borders%20Icon.png" property="twitter:image" />
+        <link href="https://files.forsaken-borders.net/images/Forsaken%20Borders%20Icon.png" rel="icon" type="image/png" />
+        <link rel="stylesheet" href="index.css" crossorigin="anonymous" />
+    </head>
+    <body class="w3-theme">
+        <header class="w3-theme-dark" id="header">
+            <h2>Forsaken Borders</h2>
+            <h4>A safe space for all.</h4>
+        </header>
+        <main class="w3-theme-d1">
+            <div id="tabs"></div>
+            <div class="display" id="project-display"></div>
+            <h1>Community:</h1>
+            <div class="display" id="community-display" style="justify-content: start">
+                <div class="w3-theme-l1 project-display" id="project-0" onclick="window.open('https://www.patreon.com/OoLunar');">
+                    <h4>Patreon</h4>
+                    <h5>Wanna make a donation? Patreon is a good way to go.</h5><img src="https://files.forsaken-borders.net/images/Patreon.png" alt="Patreon Logo" title="Patreon" style="background-color: rgb(255, 66, 77);">
+                </div>
+                <div class="w3-theme-l1 project-display" id="project-1" onclick="window.open('https://discord.gg/Bsv7zSFygc');">
+                    <h4>Discord</h4>
+                    <h5>Join my Discord!</h5><img src="https://files.forsaken-borders.net/images/discord.svg" alt="Discord Logo" title="Discord" style="background-color: rgb(44, 47, 51);">
+                </div>
+            </div>
+        </main>
+    </body>
+    <script>
+        const CACHE_KEY = "githubData";
+        const CACHE_EXPIRATION_TIME = 30 * 60 * 1000; // 30 minutes
+
+        function customFetch(url) {
+            const CACHE_KEY = `cache_${url}`;
+            const cachedData = localStorage.getItem(CACHE_KEY);
+            if(cachedData) {
+                const { timestamp, data } = JSON.parse(cachedData);
+                if(Date.now() - timestamp < CACHE_EXPIRATION_TIME) {
+                    return Promise.resolve(data);
+                }
+            }
+
+            return fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.setItem(CACHE_KEY, JSON.stringify({
+                        timestamp: Date.now(),
+                        data: data
+                    }));
+                    return data;
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                    throw error;
+                });
+        }
+
+        function generateTabsHTML(user, orgs, container) {
+            const userTab = document.createElement("div");
+            userTab.classList.add("tab");
+            userTab.textContent = user.login;
+            const userImage = document.createElement("img");
+            userImage.src = user.avatar_url;
+            userImage.onerror = () => {
+                userImage.onerror = null;
+                userImage.src = "https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/2754.svg";
+            };
+            userTab.appendChild(userImage);
+            userTab.addEventListener("click", () => fetchData(user.login));
+            container.appendChild(userTab);
+
+            for(const org of orgs) {
+                const orgTab = document.createElement("div");
+                orgTab.classList.add("tab");
+                orgTab.textContent = org.login;
+                const orgImage = document.createElement("img");
+                orgImage.src = org.avatar_url;
+                orgImage.onerror = () => {
+                    orgImage.onerror = null;
+                    orgImage.src = "https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/2754.svg";
+                };
+                orgTab.appendChild(orgImage);
+                orgTab.addEventListener("click", () => fetchData(org.login));
+                container.appendChild(orgTab);
+            }
+        }
+
+        function generateProjectHTML(data, container) {
+            for(const item of data) {
+                const projectDiv = document.createElement("div");
+                projectDiv.classList.add("w3-theme-l1");
+                projectDiv.classList.add("project-display");
+                projectDiv.onclick = () => window.open(item.html_url);
+
+                const projectTitle = document.createElement("h4");
+                projectTitle.textContent = item.name;
+
+                const projectDescription = document.createElement("h5");
+                projectDescription.textContent = item.description;
+
+                const projectImage = document.createElement("img");
+                projectImage.title = item.name;
+                projectImage.style.backgroundColor = "transparent";
+                projectImage.src = `https://raw.githubusercontent.com/${item.full_name}/${item.default_branch}/res/logo.png`;
+                projectImage.alt = `${item.name} Logo`;
+                projectImage.onerror = () => {
+                    projectImage.onerror = null;
+                    projectImage.src = "https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/2754.svg";
+                    projectImage.alt = "No Logo Available";
+                    projectImage.classList.add("missing-img");
+                };
+
+                const projectLanguage = document.createElement("small");
+                projectLanguage.textContent = `${item.language ?? "Unknown"}, ⭐ ${item.stargazers_count}`;
+
+                const projectStars = document.createElement("small");
+                projectStars.textContent = item.stargazers_count;
+
+                projectDiv.appendChild(projectTitle);
+                projectDiv.appendChild(projectDescription);
+                projectDiv.appendChild(projectImage);
+                projectDiv.appendChild(projectLanguage);
+
+                container.appendChild(projectDiv);
+            }
+        }
+
+        function fetchTabsData() {
+            const container = document.getElementById("tabs");
+
+            customFetch("https://api.github.com/users/OoLunar")
+                .then(user => {
+                    customFetch("https://api.github.com/users/OoLunar/orgs")
+                        .then(orgs => generateTabsHTML(user, orgs.sort((org1, org2) => org2.followers - org1.followers), container))
+                        .catch(error => console.error("Error fetching orgs data:", error));
+                })
+                .catch(error => console.error("Error fetching user data:", error));
+        }
+
+        function fetchData(username) {
+            const container = document.getElementById("project-display");
+            container.innerHTML = ""; // Clear the container
+
+            customFetch(`https://api.github.com/users/${username}/repos`)
+                .then(data => generateProjectHTML(data.filter(repo => !repo.fork && !repo.archived && !repo.disabled).sort((repo1, repo2) => repo2.stargazers_count === repo1.stargazers_count ? new Date(repo2.pushed_at) - new Date(repo1.pushed_at) : repo2.stargazers_count - repo1.stargazers_count), container))
+                .catch(error => console.error("Error fetching data:", error));
+        }
+
+        fetchTabsData();
+        fetchData("OoLunar");
+    </script>
+</html>
