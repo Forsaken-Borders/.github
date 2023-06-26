@@ -107,22 +107,22 @@ main {
 }
 
 .project-metadata {
-    min-width: 100%;
-    display: grid;
-    grid-template-columns: 30% 30% 30%;
-    justify-content: space-between;
-    overflow: visible;
-}
-
-.project-metadata>div {
-    align-items: center;
+    min-width: 150px;
+    max-width: 150px;
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    width: min-content;
+    overflow: visible;
+    justify-content: space-around;
 }
 
-.project-metadata>div>svg {
+.project-stats {
+    min-width: 65px;
+    display: flex;
+    flex-direction: row;
+    place-content: space-between;
+}
+
+.project-stats>svg {
     height: 1.25rem;
     width: 1.25rem;
     margin-left: 7.5px;

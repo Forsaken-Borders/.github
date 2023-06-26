@@ -135,15 +135,29 @@
                 const projectImage = document.createElement("img");
                 projectImage.title = item.name;
                 projectImage.style.backgroundColor = "transparent";
-                projectImage.src = `https://raw.githubusercontent.com/${item.full_name}/${item.default_branch}/res/logo.png`;
-                projectImage.alt = `${item.name} Logo`;
-                projectImage.onerror = () => {
-                    projectImage.onerror = null;
-                    projectImage.src = "https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/2754.svg";
-                    projectImage.title = "No Logo Available";
-                    projectImage.alt = "No Logo Available";
-                    projectImage.classList.add("missing-img");
+
+                const logoSources = [
+                    `https://raw.githubusercontent.com/${item.full_name}/${item.default_branch}/res/logo.svg`,
+                    `https://raw.githubusercontent.com/${item.full_name}/${item.default_branch}/res/logo.png`,
+                    "https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/2754.svg"
+                ];
+
+                const setNextImageSource = (index) => {
+                    if(index >= logoSources.length) {
+                        projectImage.onerror = null;
+                        projectImage.src = ""; // Set an empty source if all sources fail
+                        projectImage.title = "No Logo Available";
+                        projectImage.alt = "No Logo Available";
+                        projectImage.classList.add("missing-img");
+                        return;
+                    }
+
+                    const source = logoSources[index];
+                    projectImage.src = source;
+                    projectImage.onerror = () => setNextImageSource(index + 1);
                 };
+
+                setNextImageSource(0);
 
                 const projectMetadata = document.createElement("div");
                 projectMetadata.classList.add("project-metadata");
@@ -165,9 +179,13 @@
                 projectStars.appendChild(projectStarsText);
                 projectStars.appendChild(SVG_STAR.firstChild.cloneNode(true));
 
+                const projectStats = document.createElement("div");
+                projectStats.classList.add("project-stats");
+                projectStats.appendChild(projectForks);
+                projectStats.appendChild(projectStars);
+
                 projectMetadata.appendChild(projectLanguage);
-                projectMetadata.appendChild(projectForks);
-                projectMetadata.appendChild(projectStars);
+                projectMetadata.appendChild(projectStats);
 
                 projectDiv.appendChild(projectTitle);
                 projectDiv.appendChild(projectDescription);
